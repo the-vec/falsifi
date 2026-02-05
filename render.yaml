@@ -11,6 +11,14 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        value: sqlite:///falsifi.db
+        fromDatabase:
+          name: falsifi-db
+          property: connectionString
       - key: OPENAI_API_KEY
         sync: false
+
+databases:
+  - name: falsifi-db
+    plan: free
+    databaseName: falsifi
+    user: falsifi
