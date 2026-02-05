@@ -11,10 +11,6 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        value: sqlite:///instance/falsifi.db
+        value: sqlite:///falsifi.db
       - key: OPENAI_API_KEY
         sync: false
-    disk:
-      name: falsifi-data
-      mountPath: /opt/render/project/src/instance
-      sizeGB: 1
