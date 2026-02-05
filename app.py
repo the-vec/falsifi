@@ -627,11 +627,18 @@ The low-fat recommendation may have CAUSED the obesity epidemic by promoting hig
         ),
     ]
     
+    # Add refutations to session first to get them persisted
     for ref in refutations:
-        ref.author.points += ref.reward_earned
-        if ref.bond_returned:
-            ref.author.points += ref.bond_amount
         db.session.add(ref)
+    db.session.commit()
+    
+    # Now update user points based on refutations
+    # Update bob (users[1]) for first refutation
+    users[1].points += 0  # First refutation has no reward yet (pending rating)
+    
+    # Update charlie (users[2]) for second refutation  
+    users[2].points += 675  # reward
+    users[2].points += 75   # bond returned
     
     db.session.commit()
     print("Sample data created successfully!")
@@ -644,10 +651,12 @@ def init_db():
         create_sample_data()
         print("Database initialized!")
 
-# Create tables on startup
+# Create tables on startup (but don't create sample data automatically)
 with app.app_context():
     db.create_all()
-    create_sample_data()
+    # Only create sample data if no users exist
+    if not User.query.first():
+        create_sample_data()
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
