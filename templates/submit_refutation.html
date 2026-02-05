@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Refutation - Falsifi{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Submit Refutation</h1>
+    <div class="bounty-context">
+        <p>Refuting: <strong>{{ bounty.title }}</strong></p>
+        <p class="your-points">You have <strong>{{ user.points }}</strong> points (bond required)</p>
+    </div>
+
+    <form method="POST" class="refutation-form">
+        <div class="form-group">
+            <label for="content">Your Refutation *</label>
+            <textarea id="content" name="content" rows="10" required
+                      placeholder="Provide your best arguments against this claim. Be specific, cite evidence, and address the core of the claim."></textarea>
+            <p class="help-text">Quality refutations are well-reasoned, evidence-based, and address the main arguments.</p>
+        </div>
+
+        <div class="form-group">
+            <label for="sources">Sources (optional)</label>
+            <textarea id="sources" name="sources" rows="3"
+                      placeholder="Links to studies, articles, or other evidence supporting your refutation"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="bond_amount">Bond Amount *</label>
+            <input type="number" id="bond_amount" name="bond_amount" 
+                   min="10" max="{{ user.points }}" value="50" required>
+            <p class="help-text">Bond is returned for quality submissions. Forfeited for spam or low-effort posts.</p>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary btn-large">Submit Refutation</button>
+            <a href="{{ url_for('view_bounty', bounty_id=bounty.id) }}" class="btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

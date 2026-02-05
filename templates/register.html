@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Falsifi{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <h1>Create Account</h1>
+    <form method="POST" class="auth-form">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required placeholder="Choose a username">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="your@email.com">
+        </div>
+        <button type="submit" class="btn-primary btn-full">Create Account</button>
+    </form>
+    <p class="auth-link">Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
+</div>
+{% endblock %}

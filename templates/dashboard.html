@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Falsifi{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="dashboard-header">
+        <div class="user-info">
+            <h1>{{ user.username }}'s Dashboard</h1>
+            <div class="user-stats">
+                <span class="points-badge">{{ user.points }} points</span>
+                <span class="reputation-badge">{{ user.reputation_score|int }} reputation</span>
+            </div>
+        </div>
+        <a href="{{ url_for('create_bounty') }}" class="btn-primary">+ New Bounty</a>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-value">{{ stats.bounties_created }}</span>
+            <span class="stat-label">Bounties Created</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">{{ stats.refutations_submitted }}</span>
+            <span class="stat-label">Refutations</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">{{ stats.total_earned }}</span>
+            <span class="stat-label">Total Earned</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">{{ stats.avg_rating or '-' }}</span>
+            <span class="stat-label">Avg Rating</span>
+        </div>
+    </div>
+
+    <div class="dashboard-sections">
+        <div class="section">
+            <h2>My Bounties</h2>
+            {% if my_bounties %}
+            <div class="mini-list">
+                {% for bounty in my_bounties[:5] %}
+                <div class="mini-item">
+                    <a href="{{ url_for('view_bounty', bounty_id=bounty.id) }}">{{ bounty.title }}</a>
+                    <span class="badge badge-{{ bounty.status.value }}">{{ bounty.status.value }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% if my_bounties|length > 5 %}
+            <a href="{{ url_for('list_bounties') }}" class="view-more">View all bounties</a>
+            {% endif %}
+            {% else %}
+            <p class="empty">No bounties created yet.</p>
+            <a href="{{ url_for('create_bounty') }}" class="btn-secondary">Create your first bounty</a>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h2>My Refutations</h2>
+            {% if my_refutations %}
+            <div class="mini-list">
+                {% for ref in my_refutations[:5] %}
+                <div class="mini-item">
+                    <a href="{{ url_for('view_bounty', bounty_id=ref.bounty_id) }}">{{ ref.bounty.title[:50] }}...</a>
+                    {% if ref.reward_earned > 0 %}
+                    <span class="earned">+{{ ref.reward_earned }}</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty">No refutations submitted yet.</p>
+            <a href="{{ url_for('list_bounties') }}" class="btn-secondary">Browse open bounties</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

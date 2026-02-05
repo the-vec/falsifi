@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero">
+    <h1>Challenge Ideas. Win Rewards.</h1>
+    <p class="subtitle">Falsifi is a marketplace for refutations. Post bounties on claims you want challenged, or earn rewards by providing quality critiques.</p>
+    <div class="cta-buttons">
+        <a href="{{ url_for('list_bounties') }}" class="btn-primary btn-large">Browse Bounties</a>
+        {% if current_user %}
+            <a href="{{ url_for('create_bounty') }}" class="btn-secondary btn-large">Post a Bounty</a>
+        {% else %}
+            <a href="{{ url_for('register') }}" class="btn-secondary btn-large">Get Started</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="stats-bar">
+    <div class="stat">
+        <span class="stat-number">{{ stats.total_bounties }}</span>
+        <span class="stat-label">Total Bounties</span>
+    </div>
+    <div class="stat">
+        <span class="stat-number">{{ stats.open_bounties }}</span>
+        <span class="stat-label">Open Bounties</span>
+    </div>
+    <div class="stat">
+        <span class="stat-number">{{ stats.total_refutations }}</span>
+        <span class="stat-label">Refutations</span>
+    </div>
+    <div class="stat">
+        <span class="stat-number">{{ stats.total_users }}</span>
+        <span class="stat-label">Users</span>
+    </div>
+</div>
+
+<div class="featured-section">
+    <h2>Featured Open Bounties</h2>
+    <div class="bounty-grid">
+        {% for bounty in bounties %}
+        <div class="bounty-card">
+            <div class="bounty-header">
+                <span class="category">{{ bounty.category }}</span>
+                <span class="amount">{{ bounty.bounty_amount }} pts</span>
+            </div>
+            <h3><a href="{{ url_for('view_bounty', bounty_id=bounty.id) }}">{{ bounty.title }}</a></h3>
+            <p class="bounty-preview">{{ bounty.description[:150] }}{% if bounty.description|length > 150 %}...{% endif %}</p>
+            <div class="bounty-meta">
+                <span>By {{ bounty.creator.username }}</span>
+                <span>{{ bounty.refutations|length }} refutations</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="view-all">
+        <a href="{{ url_for('list_bounties') }}" class="btn-secondary">View All Bounties</a>
+    </div>
+</div>
+
+<div class="how-it-works">
+    <h2>How It Works</h2>
+    <div class="steps">
+        <div class="step">
+            <div class="step-number">1</div>
+            <h3>Post a Bounty</h3>
+            <p>Submit a claim, idea, or proposition you want challenged. Set a reward amount.</p>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <h3>Receive Refutations</h3>
+            <p>Critical thinkers submit their best arguments against your claim.</p>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <h3>Reward Quality</h3>
+            <p>Rate submissions and award points to the best refutations.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

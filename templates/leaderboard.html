@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Leaderboard - Falsifi{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Leaderboard</h1>
+    <p>Top refutation providers by points earned</p>
+</div>
+
+<div class="leaderboard">
+    {% for entry in entries %}
+    <div class="leaderboard-row {% if loop.index <= 3 %}top-{{ loop.index }}{% endif %}">
+        <div class="rank">{{ loop.index }}</div>
+        <div class="user">
+            <span class="username">{{ entry.user.username }}</span>
+        </div>
+        <div class="stats">
+            <div class="stat">
+                <span class="value">{{ entry.total_earned }}</span>
+                <span class="label">earned</span>
+            </div>
+            <div class="stat">
+                <span class="value">{{ entry.total_refutations }}</span>
+                <span class="label">refutations</span>
+            </div>
+            <div class="stat">
+                <span class="value">{{ "%.1f"|format(entry.avg_rating) }}</span>
+                <span class="label">avg rating</span>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No entries yet. Start submitting refutations to appear on the leaderboard!</p>
+        <a href="{{ url_for('list_bounties') }}" class="btn-primary">Browse Bounties</a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Bounties - Falsifi{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Bounties</h1>
+    {% if current_user %}
+    <a href="{{ url_for('create_bounty') }}" class="btn-primary">+ New Bounty</a>
+    {% endif %}
+</div>
+
+<div class="filters">
+    <form method="GET" class="filter-form">
+        <select name="status" onchange="this.form.submit()">
+            <option value="all" {% if current_status == 'all' %}selected{% endif %}>All Status</option>
+            <option value="open" {% if current_status == 'open' %}selected{% endif %}>Open</option>
+            <option value="closed" {% if current_status == 'closed' %}selected{% endif %}>Closed</option>
+        </select>
+        <select name="category" onchange="this.form.submit()">
+            <option value="all" {% if current_category == 'all' %}selected{% endif %}>All Categories</option>
+            {% for cat in categories %}
+            <option value="{{ cat }}" {% if current_category == cat %}selected{% endif %}>{{ cat|title }}</option>
+            {% endfor %}
+        </select>
+    </form>
+</div>
+
+<div class="bounty-list">
+    {% for bounty in bounties %}
+    <div class="bounty-item">
+        <div class="bounty-main">
+            <div class="bounty-header-row">
+                <span class="badge badge-{{ bounty.status.value }}">{{ bounty.status.value|upper }}</span>
+                <span class="category-tag">{{ bounty.category }}</span>
+            </div>
+            <h3><a href="{{ url_for('view_bounty', bounty_id=bounty.id) }}">{{ bounty.title }}</a></h3>
+            <p class="bounty-desc">{{ bounty.description[:200] }}{% if bounty.description|length > 200 %}...{% endif %}</p>
+        </div>
+        <div class="bounty-stats">
+            <div class="stat-item">
+                <span class="stat-value">{{ bounty.bounty_amount }}</span>
+                <span class="stat-label">points</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">{{ bounty.refutations|length }}</span>
+                <span class="stat-label">refutations</span>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No bounties found matching your criteria.</p>
+        {% if current_user %}
+        <a href="{{ url_for('create_bounty') }}" class="btn-primary">Create the first bounty</a>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

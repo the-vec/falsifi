@@ -1,0 +1,22 @@
+{
+  "name": "falsifi",
+  "description": "Refutation Bounty Platform",
+  "repository": "https://github.com/yourusername/falsifi",
+  "keywords": ["flask", "python", "bounties", "refutations"],
+  "addons": [],
+  "env": {
+    "SECRET_KEY": {
+      "description": "Flask secret key for session management",
+      "generator": "secret"
+    },
+    "OPENAI_API_KEY": {
+      "description": "OpenAI API key for AI adjudication",
+      "required": false
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ]
+}

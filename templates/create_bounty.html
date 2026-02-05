@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Create Bounty - Falsifi{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Create New Bounty</h1>
+    <p class="form-subtitle">You have <strong>{{ user.points }}</strong> points available</p>
+
+    <form method="POST" class="bounty-form">
+        <div class="form-group">
+            <label for="title">Bounty Title *</label>
+            <input type="text" id="title" name="title" required 
+                   placeholder="e.g., 'Bitcoin is a better store of value than gold'"
+                   maxlength="200">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description *</label>
+            <textarea id="description" name="description" rows="8" required
+                      placeholder="Describe the claim you want refuted. Be specific about what would count as a successful refutation."></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option value="general">General</option>
+                    <option value="crypto">Cryptocurrency</option>
+                    <option value="science">Science</option>
+                    <option value="technology">Technology</option>
+                    <option value="business">Business</option>
+                    <option value="politics">Politics</option>
+                    <option value="philosophy">Philosophy</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="bounty_amount">Bounty Amount *</label>
+                <input type="number" id="bounty_amount" name="bounty_amount" 
+                       min="10" max="{{ user.points }}" value="100" required>
+            </div>
+        </div>
+
+        <div class="form-group checkbox-group">
+            <label>
+                <input type="checkbox" name="auto_adjudicate" checked>
+                Enable AI pre-screening (recommended)
+            </label>
+            <p class="help-text">AI will automatically filter low-quality submissions</p>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary btn-large">Create Bounty</button>
+            <a href="{{ url_for('list_bounties') }}" class="btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
